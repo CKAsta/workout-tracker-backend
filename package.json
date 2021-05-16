@@ -1,0 +1,28 @@
+{
+  "name": "workout-tracker-backend",
+  "version": "1.0.0",
+  "description": "A simple Workout tracking app",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CKAsta/workout-tracker-backend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CKAsta/workout-tracker-backend/issues"
+  },
+  "homepage": "https://github.com/CKAsta/workout-tracker-backend#readme",
+  "dependencies": {
+    "@prisma/client": "^2.22.1",
+    "apollo-server": "^2.24.0",
+    "graphql": "^15.5.0"
+  },
+  "devDependencies": {
+    "prisma": "^2.22.1"
+  }
+}
