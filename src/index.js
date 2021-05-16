@@ -1,53 +1,100 @@
+/**
+ * @typedef { import("@prisma/client").PrismaClient } Prisma
+ */
+
 const { ApolloServer } = require('apollo-server')
 const fs = require('fs')
 const path = require('path')
+const { PrismaClient } = require('@prisma/client')
 
-let exercises = [
-  {
-    id: 'exercise-0',
-    name: 'Benchpress',
-    muscleGroup: 'Chest'
-  },
-  {
-    id: 'exercise-1',
-    name: 'Squat',
-    muscleGroup: 'Legs'
-  }
-]
+const prisma = new PrismaClient()
 
-let idCount = exercises.length
 const resolvers = {
   Query: {
-    info: () => `Test`,
-    allExercises: () => exercises,
-    exercise: (_, { id }) => exercises.find(e => e.id === id)
+    info: () => `This is a Workout API`,
+
+    /**
+     * Get all Exercises
+     * @param {any} parent 
+     * @param {any} args 
+     * @param {{ prisma: Prisma }} context 
+     * @returns 
+     */
+    getAllExercises: async(parent, args, context) => {
+      return context.prisma.exercise.findMany()
+    },
+
+    /**
+     * Get Exercise by ID
+     * @param {any} parent 
+     * @param {{ id: Int }} args 
+     * @param {{ prisma: Prisma }} context 
+     * @returns 
+     */
+    getExerciseById: async(parent, args, context) => {
+      const id = +args.id
+      return context.prisma.exercise.findUnique({
+        where: {
+          id: id
+        }
+      })
+    }
   },
   Mutation: {
-    post: (parent, args) => {
-      const exercise = {
-        id: `exercise-${idCount}`,
-        name: args.name,
-        muscleGroup: args.muscleGroup,
-      }
-      exercises.push(exercise)
-
-      return exercise
+    /**
+     * Add a new Exercise
+     * @param {any} parent 
+     * @param { name: String, muscleGroup: String} args 
+     * @param {{ prisma: Prisma }} context 
+     * @param {any} info 
+     * @returns 
+     */
+    addExercise: (parent, args, context, info) => {
+      const newExercise = context.prisma.exercise.create({
+        data: {
+          name: args.name,
+          muscleGroup: args.muscleGroup
+        }
+      })
+      return newExercise
     },
-    updateExercise: (parent, args) => {
-      const exercise = exercises.find(e => e.id === args.id)
 
-      exercise.name = args.name
-      exercise.muscleGroup = args.muscleGroup
-
-      return exercise
+    /**
+     * Update a existing Exercise by ID
+     * @param {any} parent 
+     * @param { id: Int, name: String, muscleGroup: String} args
+     * @param {{ prisma: Prisma }} context
+     * @param {any} info
+     */
+    updateExercise: (parent, args, context, info) => {
+      const id = +args.id
+      const updatedExercise = context.prisma.exercise.update({
+        where: {
+          id: id,
+        },
+        data: {
+          name: args.name,
+          muscleGroup: args.muscleGroup,
+        },
+      })
+      return updatedExercise
     },
-    deleteExercise: (parent, args) => {
-      const exercise = exercises.find(e => e.id === args.id)
-
-      let removeIndex = exercises.map(exercise => exercise.id).indexOf(exercise.id)
-      ~removeIndex && exercises.splice(removeIndex, 1)
-      
-      return exercise
+    
+    /**
+     * Delete a existing Exercise by ID
+     * @param {any} parent 
+     * @param { id: Int } args 
+     * @param {{ prisma: Prisma }} context 
+     * @param {any} info 
+     */
+    deleteExercise: (parent, args, context, info) => {
+      const id = +args.id
+      const deletedUser = context.prisma.exercise.delete({
+        where: {
+          id: id,
+        },
+      })
+      return deletedUser
     }
   }
 }
@@ -57,7 +104,10 @@ const server = new ApolloServer({
     path.join(__dirname, 'schema.graphql'),
     'utf-8'
   ),
-  resolvers
+  resolvers,
+  context: {
+    prisma
+  }
 })
 
 server.listen().then(({ url }) => {

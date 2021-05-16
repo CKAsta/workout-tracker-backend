@@ -1,11 +1,11 @@
 type Query {
   info: String!
-  allExercises: [Exercise!]!
-  exercise(id: ID!): Exercise
+  getAllExercises: [Exercise!]!
+  getExerciseById(id: ID!): Exercise
 }
 
 type Mutation {
-  post(name: String!, muscleGroup: String!): Exercise!
+  addExercise(name: String!, muscleGroup: String!): Exercise!
   updateExercise(id: ID!, name: String, muscleGroup: String): Exercise
   deleteExercise(id: ID!): Exercise
 }
