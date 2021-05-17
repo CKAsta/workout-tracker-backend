@@ -2,16 +2,38 @@ type Query {
   info: String!
   getAllExercises: [Exercise!]!
   getExerciseById(id: ID!): Exercise
+  getAllWorkouts: [Workout!]!
+  getWorkoutById(id: ID!): Workout
 }
 
 type Mutation {
   addExercise(name: String!, muscleGroup: String!): Exercise!
   updateExercise(id: ID!, name: String, muscleGroup: String): Exercise
   deleteExercise(id: ID!): Exercise
+
+  addWorkout(name: String!): Workout!
+  updateWorkout(id: ID!, name: String): Workout
+  deleteWorkout(id: ID!): Workout
+  
+  addExercisesOnWorkouts(exerciseId: ID!, workoutId: ID!, sets: Int!, repetitions: Int!): ExercisesOnWorkouts
 }
 
 type Exercise {
   id: ID!
   name: String!
   muscleGroup: String!
+  workouts: [Workout]!
+}
+
+type Workout {
+  id: ID!
+  name: String!
+  exercises: [Exercise]!
+}
+
+type ExercisesOnWorkouts {
+  exerciseId: ID!
+  workoutId: ID!
+  sets: Int!
+  repetitions: Int!
 }

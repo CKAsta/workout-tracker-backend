@@ -1,0 +1,10 @@
+-- CreateTable
+CREATE TABLE "ExercisesOnWorkouts" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "exerciseId" INTEGER NOT NULL,
+    "workoutId" INTEGER NOT NULL,
+    "sets" INTEGER NOT NULL DEFAULT 3,
+    "reps" INTEGER NOT NULL DEFAULT 10,
+    FOREIGN KEY ("exerciseId") REFERENCES "Exercise" ("id") ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY ("workoutId") REFERENCES "Workout" ("id") ON DELETE CASCADE ON UPDATE CASCADE
+);

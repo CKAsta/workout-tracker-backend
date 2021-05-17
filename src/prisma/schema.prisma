@@ -15,22 +15,21 @@ model Exercise {
   createdAt   DateTime  @default(now())
   name        String
   muscleGroup String
-  workouts ExercisesOnWorkouts[]
+  exercisesOnWorkouts ExercisesOnWorkouts[]
 }
 
 model Workout {
   id    Int     @id @default(autoincrement())
   name  String
-  exercises ExercisesOnWorkouts[]
+  exercisesOnWorkouts ExercisesOnWorkouts[]
 }
 
 model ExercisesOnWorkouts {
-  exercise Exercise @relation(fields: [exerciseId], references: [id])
-  exerciseId        Int
-  workout Workout   @relation(fields: [workoutId], references: [id])
-  workoutId         Int
-  sets              Int
-  repetitions       Int
-
-  @@id([exerciseId, workoutId])
+  id          Int @id @default(autoincrement())
+  exercise    Exercise @relation(fields: [exerciseId], references: [id])
+  exerciseId  Int
+  workout     Workout @relation(fields: [workoutId], references: [id])
+  workoutId   Int
+  sets        Int @default(3)
+  reps        Int @default(10)
 }
