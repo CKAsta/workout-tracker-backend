@@ -6,6 +6,9 @@ const Query = require('./resolvers/Query')
 const Mutation = require('./resolvers/Mutation')
 const Exercise = require('./resolvers/Exercise')
 const Workout = require('./resolvers/Workout')
+const ExercisesOnWorkouts = require('./resolvers/ExercisesOnWorkouts')
+const User = require('./resolvers/User')
+const { getUserId } = require('./utils')
 
 const prisma = new PrismaClient()
 
@@ -14,6 +17,8 @@ const resolvers = {
   Mutation,
   Exercise,
   Workout,
+  ExercisesOnWorkouts,
+  User,
 }
 
 const server = new ApolloServer({
@@ -22,8 +27,15 @@ const server = new ApolloServer({
     'utf-8'
   ),
   resolvers,
-  context: {
-    prisma
+  context: ({ req }) => {
+    return {
+      ...req,
+      prisma,
+      userId:
+        req && req.headers.authorization
+          ? getUserId(req)
+          : null
+    };
   }
 })
 
