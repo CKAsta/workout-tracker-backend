@@ -15,25 +15,43 @@ type Mutation {
   updateWorkout(id: ID!, name: String): Workout
   deleteWorkout(id: ID!): Workout
   
-  addExercisesOnWorkouts(exerciseId: ID!, workoutId: ID!, sets: Int!, repetitions: Int!): ExercisesOnWorkouts
+  addExercisesOnWorkouts(exerciseId: ID!, workoutId: ID!, sets: Int!, reps: Int!): ExercisesOnWorkouts
+  updateExercisesOnWorkouts(id: ID!, exerciseId: ID!, workoutId: ID!, sets: Int!, reps: Int!): ExercisesOnWorkouts
+  deleteExercisesOnWorkouts(id: ID!): ExercisesOnWorkouts
+
+  signup(email: String!, password: String!, name: String!): AuthPayload
+  login(email: String!, password: String!): AuthPayload
 }
 
 type Exercise {
   id: ID!
   name: String!
   muscleGroup: String!
-  workouts: [Workout]!
+  exercisesOnWorkouts: [ExercisesOnWorkouts]!
 }
 
 type Workout {
   id: ID!
   name: String!
-  exercises: [Exercise]!
+  exercisesOnWorkouts: [ExercisesOnWorkouts]!
+  user: User
 }
 
 type ExercisesOnWorkouts {
-  exerciseId: ID!
-  workoutId: ID!
+  exercise: Exercise
+  workout: Workout
   sets: Int!
-  repetitions: Int!
+  reps: Int!
+}
+
+type AuthPayload {
+  token: String
+  user: User
+}
+
+type User {
+  id: ID!
+  name: String
+  email: String
+  workouts: [Workout!]!
 }

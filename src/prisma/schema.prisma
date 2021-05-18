@@ -11,17 +11,19 @@ generator client {
 }
 
 model Exercise {
-  id          Int       @id @default(autoincrement())
-  createdAt   DateTime  @default(now())
-  name        String
-  muscleGroup String
+  id                  Int       @id @default(autoincrement())
+  createdAt           DateTime  @default(now())
+  name                String
+  muscleGroup         String
   exercisesOnWorkouts ExercisesOnWorkouts[]
 }
 
 model Workout {
-  id    Int     @id @default(autoincrement())
-  name  String
+  id                  Int @id @default(autoincrement())
+  name                String
   exercisesOnWorkouts ExercisesOnWorkouts[]
+  user                User @relation(fields: [userId], references: [id])
+  userId              Int
 }
 
 model ExercisesOnWorkouts {
@@ -32,4 +34,12 @@ model ExercisesOnWorkouts {
   workoutId   Int
   sets        Int @default(3)
   reps        Int @default(10)
+}
+
+model User {
+  id  Int @id @default(autoincrement())
+  name  String
+  email String @unique
+  password String
+  workouts Workout[]
 }
