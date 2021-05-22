@@ -56,9 +56,27 @@ async function getWorkoutById(parent, args, context) {
   })
 }
 
+/**
+ * Add a new Workout
+ * @param {any} parent 
+ * @param {*} args 
+ * @param {{ prisma: Prisma }} context 
+ * @param {any} info 
+ * @returns 
+ */
+async function me(parent, args, context) {
+  const { userId } = context
+  return context.prisma.user.findUnique({
+    where: {
+      id: userId
+    }
+  })
+}
+
 module.exports = {
   getAllExercises,
   getExerciseById,
   getAllWorkouts,
   getWorkoutById,
+  me
 }

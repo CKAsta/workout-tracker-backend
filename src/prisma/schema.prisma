@@ -32,14 +32,22 @@ model ExercisesOnWorkouts {
   exerciseId  Int
   workout     Workout @relation(fields: [workoutId], references: [id])
   workoutId   Int
-  sets        Int @default(3)
-  reps        Int @default(10)
+  setTargets   SetTarget[]
 }
 
 model User {
-  id  Int @id @default(autoincrement())
-  name  String
-  email String @unique
-  password String
-  workouts Workout[]
+  id        Int @id @default(autoincrement())
+  name      String
+  email     String @unique
+  password  String
+  workouts  Workout[]
+}
+
+model SetTarget {
+  id        Int @id @default(autoincrement())
+  exercisesOnWorkouts ExercisesOnWorkouts @relation(fields: [exercisesOnWorkoutsId], references: [id])
+  exercisesOnWorkoutsId Int
+  setNumber Int
+  reps      Int @default(3)
+  weight    Int @default(10)
 }

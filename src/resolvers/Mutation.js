@@ -124,8 +124,6 @@ async function addExercisesOnWorkouts(parent, args, context, info) {
     data: {
       exercise: { connect: {id: parseInt(args.exerciseId) } },
       workout: { connect: {id: parseInt(args.workoutId) } },
-      sets: args.sets,
-      reps: args.reps,
     },
   })
 }
@@ -146,8 +144,6 @@ async function updateExercisesOnWorkouts(parent, args, context, info) {
     data: {
       exercise: { connect: {id: parseInt(args.exerciseId) } },
       workout: { connect: {id: parseInt(args.workoutId) } },
-      sets: args.sets,
-      reps: args.reps,
     },
   })
 }
@@ -162,6 +158,62 @@ async function updateExercisesOnWorkouts(parent, args, context, info) {
  async function deleteExercisesOnWorkouts(parent, args, context, info) {
   const id = +args.id
   return await context.prisma.exercisesOnWorkouts.delete({
+    where: {
+      id: parseInt(args.id),
+    },
+  })
+}
+
+/**
+ * Add a new ExerciseOnWorkout
+ * @param {any} parent 
+ * @param { exerciseId: Int, workoutId: Int, sets: Int, repetitions: Int} args 
+ * @param {{ prisma: Prisma}} context 
+ * @param {any} info 
+ */
+ async function addSetTarget(parent, args, context, info) {
+  return await context.prisma.setTarget.create({
+    data: {
+      exercisesOnWorkouts: { connect: {id: parseInt(args.exercisesOnWorkoutsId) } },
+      setNumber: args.setNumber,
+      reps: args.reps,
+      weight: args.weight,
+    },
+  })
+}
+
+/**
+ * Update a existing ExerciseOnWorkout by ID
+ * @param {any} parent 
+ * @param { id: Int, exerciseId: Int, workoutId: Int, sets: Int, repetitions: Int} args
+ * @param {{ prisma: Prisma }} context
+ * @param {any} info
+ */
+async function updateSetTarget(parent, args, context, info) {
+  const id = +args.id
+  return await context.prisma.setTarget.update({
+    where: {
+      id: id,
+    },
+    data: {
+      exercisesOnWorkouts: { connect: {id: parseInt(args.exercisesOnWorkoutsId) } },
+      setNumber: args.setNumber,
+      reps: args.reps,
+      weight: args.weight,
+    },
+  })
+}
+
+/**
+ * Delete a existing Workout by ID
+ * @param {any} parent 
+ * @param { id: Int } args 
+ * @param {{ prisma: Prisma }} context 
+ * @param {any} info 
+ */
+ async function deleteSetTarget(parent, args, context, info) {
+  const id = +args.id
+  return await context.prisma.setTarget.delete({
     where: {
       id: parseInt(args.id),
     },
@@ -230,6 +282,9 @@ module.exports = {
   addExercisesOnWorkouts,
   updateExercisesOnWorkouts,
   deleteExercisesOnWorkouts,
+  addSetTarget,
+  updateSetTarget,
+  deleteSetTarget,
   signup,
   login,
 }

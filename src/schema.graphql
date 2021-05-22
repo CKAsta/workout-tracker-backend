@@ -4,6 +4,8 @@ type Query {
   getExerciseById(id: ID!): Exercise
   getAllWorkouts: [Workout!]!
   getWorkoutById(id: ID!): Workout
+
+  me: User
 }
 
 type Mutation {
@@ -15,9 +17,13 @@ type Mutation {
   updateWorkout(id: ID!, name: String): Workout
   deleteWorkout(id: ID!): Workout
   
-  addExercisesOnWorkouts(exerciseId: ID!, workoutId: ID!, sets: Int!, reps: Int!): ExercisesOnWorkouts
-  updateExercisesOnWorkouts(id: ID!, exerciseId: ID!, workoutId: ID!, sets: Int!, reps: Int!): ExercisesOnWorkouts
+  addExercisesOnWorkouts(exerciseId: ID!, workoutId: ID!): ExercisesOnWorkouts
+  updateExercisesOnWorkouts(id: ID!, exerciseId: ID!, workoutId: ID!): ExercisesOnWorkouts
   deleteExercisesOnWorkouts(id: ID!): ExercisesOnWorkouts
+
+  addSetTarget(exercisesOnWorkoutsId: ID!, setNumber: Int!, reps: Int!, weight: Int!): SetTarget
+  updateSetTarget(id: ID!, exercisesOnWorkoutsId: ID!, setNumber: Int!, reps: Int!, weight: Int!): SetTarget
+  deleteSetTarget(id: ID!): SetTarget
 
   signup(email: String!, password: String!, name: String!): AuthPayload
   login(email: String!, password: String!): AuthPayload
@@ -38,10 +44,10 @@ type Workout {
 }
 
 type ExercisesOnWorkouts {
+  id: ID!
   exercise: Exercise
   workout: Workout
-  sets: Int!
-  reps: Int!
+  setTargets: [SetTarget!]!
 }
 
 type AuthPayload {
@@ -54,4 +60,12 @@ type User {
   name: String
   email: String
   workouts: [Workout!]!
+}
+
+type SetTarget {
+  id: ID!
+  exercisesOnWorkouts: ExercisesOnWorkouts
+  setNumber: Int
+  reps: Int
+  weight: Int
 }

@@ -8,6 +8,7 @@ const Exercise = require('./resolvers/Exercise')
 const Workout = require('./resolvers/Workout')
 const ExercisesOnWorkouts = require('./resolvers/ExercisesOnWorkouts')
 const User = require('./resolvers/User')
+const SetTarget = require('./resolvers/SetTarget')
 const { getUserId } = require('./utils')
 
 const prisma = new PrismaClient()
@@ -19,6 +20,7 @@ const resolvers = {
   Workout,
   ExercisesOnWorkouts,
   User,
+  SetTarget,
 }
 
 const server = new ApolloServer({

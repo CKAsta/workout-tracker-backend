@@ -3,16 +3,16 @@
  */
 
 /**
- * Get exercisesOnWorkouts
+ * Get ExerciseOnWorkout
  * @param {*} parent 
  * @param {*} args 
- * @param {{ prisma: Prisma}} context 
+ * @param {{ prisma: Prisma }} context 
  * @returns 
  */
 async function exercisesOnWorkouts(parent, args, context) {
-  return context.prisma.exercise.findUnique({ where: { id: parent.id } }).exercisesOnWorkouts()
+  return context.prisma.setTarget.findUnique({ where: { id: parent.id } }).exercisesOnWorkouts()
 }
 
 module.exports = {
-  exercisesOnWorkouts,
+  exercisesOnWorkouts
 }
