@@ -24,6 +24,7 @@ type Mutation {
   addSetTarget(exercisesOnWorkoutsId: ID!, setNumber: Int!, reps: Int!, weight: Int!): SetTarget
   updateSetTarget(id: ID!, exercisesOnWorkoutsId: ID!, setNumber: Int!, reps: Int!, weight: Int!): SetTarget
   deleteSetTarget(id: ID!): SetTarget
+  deleteSetTargetByExercise(exercisesOnWorkoutsId: ID!): SetTarget
 
   signup(email: String!, password: String!, name: String!): AuthPayload
   login(email: String!, password: String!): AuthPayload

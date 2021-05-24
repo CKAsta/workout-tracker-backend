@@ -212,11 +212,25 @@ async function updateSetTarget(parent, args, context, info) {
  * @param {any} info 
  */
  async function deleteSetTarget(parent, args, context, info) {
-  const id = +args.id
   return await context.prisma.setTarget.delete({
     where: {
       id: parseInt(args.id),
     },
+  })
+}
+
+/**
+ * Delete a existing Workout by ID
+ * @param {any} parent 
+ * @param { id: Int } args 
+ * @param {{ prisma: Prisma }} context 
+ * @param {any} info 
+ */
+async function deleteSetTargetByExercise(parent, args, context, info) {
+  return await context.prisma.setTarget.deleteMany({
+    where: {
+      exercisesOnWorkoutsId: parseInt(args.exercisesOnWorkoutsId)
+    }
   })
 }
 
@@ -285,6 +299,7 @@ module.exports = {
   addSetTarget,
   updateSetTarget,
   deleteSetTarget,
+  deleteSetTargetByExercise,
   signup,
   login,
 }
