@@ -1,0 +1,12 @@
+-- CreateTable
+CREATE TABLE "LogEntry" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "logId" INTEGER NOT NULL,
+    "exercisesOnWorkoutsId" INTEGER NOT NULL,
+    "setNumber" INTEGER NOT NULL,
+    "reps" INTEGER NOT NULL,
+    "weight" INTEGER NOT NULL,
+    "timeRecorded" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY ("logId") REFERENCES "Log" ("id") ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY ("exercisesOnWorkoutsId") REFERENCES "ExercisesOnWorkouts" ("id") ON DELETE CASCADE ON UPDATE CASCADE
+);

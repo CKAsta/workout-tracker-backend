@@ -24,6 +24,7 @@ model Workout {
   exercisesOnWorkouts ExercisesOnWorkouts[]
   user                User @relation(fields: [userId], references: [id])
   userId              Int
+  logs                Log[]
 }
 
 model ExercisesOnWorkouts {
@@ -32,7 +33,8 @@ model ExercisesOnWorkouts {
   exerciseId  Int
   workout     Workout @relation(fields: [workoutId], references: [id])
   workoutId   Int
-  setTargets   SetTarget[]
+  setTargets  SetTarget[]
+  logEntries  LogEntry[]
 }
 
 model User {
@@ -44,10 +46,30 @@ model User {
 }
 
 model SetTarget {
-  id        Int @id @default(autoincrement())
-  exercisesOnWorkouts ExercisesOnWorkouts @relation(fields: [exercisesOnWorkoutsId], references: [id])
+  id                    Int @id @default(autoincrement())
+  exercisesOnWorkouts   ExercisesOnWorkouts @relation(fields: [exercisesOnWorkoutsId], references: [id])
+  exercisesOnWorkoutsId Int
+  setNumber             Int
+  reps                  Int @default(3)
+  weight                Int @default(10)
+}
+
+model Log {
+  id          Int @id @default(autoincrement())
+  workout     Workout @relation(fields: [workoutId], references: [id])
+  workoutId   Int
+  date        DateTime  @default(now())
+  logEntries  LogEntry[]
+}
+
+model LogEntry {
+  id  Int @id @default(autoincrement())
+  log Log @relation(fields: [logId], references:[id])
+  logId Int
+  exercisesOnWorkouts   ExercisesOnWorkouts @relation(fields: [exercisesOnWorkoutsId], references: [id])
   exercisesOnWorkoutsId Int
   setNumber Int
-  reps      Int @default(3)
-  weight    Int @default(10)
+  reps      Int
+  weight    Int
+  timeRecorded  DateTime @default(now())
 }

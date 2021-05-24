@@ -149,7 +149,7 @@ async function updateExercisesOnWorkouts(parent, args, context, info) {
 }
 
 /**
- * Delete a existing Workout by ID
+ * Delete a existing exerciseOnWorkout by ID
  * @param {any} parent 
  * @param { id: Int } args 
  * @param {{ prisma: Prisma }} context 
@@ -165,7 +165,7 @@ async function updateExercisesOnWorkouts(parent, args, context, info) {
 }
 
 /**
- * Add a new ExerciseOnWorkout
+ * Add a new SetTarget
  * @param {any} parent 
  * @param { exerciseId: Int, workoutId: Int, sets: Int, repetitions: Int} args 
  * @param {{ prisma: Prisma}} context 
@@ -183,7 +183,7 @@ async function updateExercisesOnWorkouts(parent, args, context, info) {
 }
 
 /**
- * Update a existing ExerciseOnWorkout by ID
+ * Update a existing SetTarget by ID
  * @param {any} parent 
  * @param { id: Int, exerciseId: Int, workoutId: Int, sets: Int, repetitions: Int} args
  * @param {{ prisma: Prisma }} context
@@ -205,7 +205,7 @@ async function updateSetTarget(parent, args, context, info) {
 }
 
 /**
- * Delete a existing Workout by ID
+ * Delete a existing SetTarget by ID
  * @param {any} parent 
  * @param { id: Int } args 
  * @param {{ prisma: Prisma }} context 
@@ -220,7 +220,7 @@ async function updateSetTarget(parent, args, context, info) {
 }
 
 /**
- * Delete a existing Workout by ID
+ * Delete a existing SetTarget by ExerciseID
  * @param {any} parent 
  * @param { id: Int } args 
  * @param {{ prisma: Prisma }} context 
@@ -231,6 +231,113 @@ async function deleteSetTargetByExercise(parent, args, context, info) {
     where: {
       exercisesOnWorkoutsId: parseInt(args.exercisesOnWorkoutsId)
     }
+  })
+}
+
+/**
+ * Add a new Log
+ * @param {any} parent 
+ * @param { name: String} args 
+ * @param {{ prisma: Prisma }} context 
+ * @param {any} info 
+ * @returns 
+ */
+ async function addLog(parent, args, context, info) {
+  return await context.prisma.log.create({
+    data: {
+      workout: { connect: {id: parseInt(args.workoutId) } },
+    }
+  })
+}
+
+/**
+ * Update a existing Log by ID
+ * @param {any} parent 
+ * @param { id: Int, name: String, muscleGroup: String} args
+ * @param {{ prisma: Prisma }} context
+ * @param {any} info
+ */
+async function updateLog(parent, args, context, info) {
+  const id = +args.id
+  return await context.prisma.log.update({
+    where: {
+      id: id,
+    },
+    data: {
+      workout: { connect: {id: parseInt(args.workoutId) } },
+    },
+  })
+}
+
+/**
+ * Delete a existing Workout by ID
+ * @param {any} parent 
+ * @param { id: Int } args 
+ * @param {{ prisma: Prisma }} context 
+ * @param {any} info 
+ */
+async function deleteLog(parent, args, context, info) {
+  return await context.prisma.log.delete({
+    where: {
+      id: parseInt(id),
+    },
+  })
+}
+
+/**
+ * Add a new LogEntry
+ * @param {any} parent 
+ * @param { name: String} args 
+ * @param {{ prisma: Prisma }} context 
+ * @param {any} info 
+ * @returns 
+ */
+ async function addLogEntry(parent, args, context, info) {
+  return await context.prisma.logEntry.create({
+    data: {
+      log: { connect: {id: parseInt(args.logId) } },
+      exercisesOnWorkouts: { connect: {id: parseInt(args.exercisesOnWorkoutsId) } },
+      setNumber: args.setNumber,
+      reps: args.reps,
+      weight: args.weight
+    }
+  })
+}
+
+/**
+ * Update a existing LogEntry by ID
+ * @param {any} parent 
+ * @param { id: Int, name: String, muscleGroup: String} args
+ * @param {{ prisma: Prisma }} context
+ * @param {any} info
+ */
+async function updateLogEntry(parent, args, context, info) {
+  return await context.prisma.logEntry.update({
+    where: {
+      id: parseInt(args.id),
+    },
+    data: {
+      log: { connect: {id: parseInt(args.logId) } },
+      exercisesOnWorkouts: { connect: {id: parseInt(args.exercisesOnWorkoutsId) } },
+      setNumber: args.setNumber,
+      reps: args.reps,
+      weight: args.weight
+    },
+  })
+}
+
+/**
+ * Delete a existing LogEntry by ID
+ * @param {any} parent 
+ * @param { id: Int } args 
+ * @param {{ prisma: Prisma }} context 
+ * @param {any} info 
+ */
+async function deleteLogEntry(parent, args, context, info) {
+  return await context.prisma.logEntry.delete({
+    where: {
+      id: parseInt(id),
+    },
   })
 }
 
@@ -300,6 +407,12 @@ module.exports = {
   updateSetTarget,
   deleteSetTarget,
   deleteSetTargetByExercise,
+  addLog,
+  updateLog,
+  deleteLog,
+  addLogEntry,
+  updateLogEntry,
+  deleteLogEntry,
   signup,
   login,
 }
