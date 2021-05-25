@@ -26,6 +26,14 @@ type Mutation {
   deleteSetTarget(id: ID!): SetTarget
   deleteSetTargetByExercise(exercisesOnWorkoutsId: ID!): SetTarget
 
+  addLog(workoutId: ID!): Log!
+  updateLog(id: ID!, workoutId: ID!): Log
+  deleteLog(id: ID!): Log
+
+  addLogEntry(logId: ID!, exercisesOnWorkoutsId: ID!, setNumber: Int!, reps: Int!, weight: Int!): LogEntry
+  updateLogEntry(id: ID!, logId: ID!, exercisesOnWorkoutsId: ID!, setNumber: Int!, reps: Int!, weight: Int!): LogEntry
+  deleteLogEntry(id: ID!): LogEntry
+
   signup(email: String!, password: String!, name: String!): AuthPayload
   login(email: String!, password: String!): AuthPayload
 }
@@ -42,6 +50,7 @@ type Workout {
   name: String!
   exercisesOnWorkouts: [ExercisesOnWorkouts]!
   user: User
+  logs: [Log]!
 }
 
 type ExercisesOnWorkouts {
@@ -49,6 +58,7 @@ type ExercisesOnWorkouts {
   exercise: Exercise
   workout: Workout
   setTargets: [SetTarget!]!
+  logEntries: [LogEntry!]!
 }
 
 type AuthPayload {
@@ -69,4 +79,19 @@ type SetTarget {
   setNumber: Int
   reps: Int
   weight: Int
+}
+
+type Log {
+  id: ID!
+  workout: Workout
+  logEntries: [LogEntry!]!
+}
+
+type LogEntry {
+  id: ID!
+  log: Log
+  exercisesOnWorkouts: ExercisesOnWorkouts
+  setNumber: Int
+  reps:      Int
+  weight:    Int
 }

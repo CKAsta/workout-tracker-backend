@@ -28,9 +28,21 @@ async function setTargets(parent, args, context) {
   return context.prisma.exercisesOnWorkouts.findUnique({ where: { id: parent.id } }).setTargets()
 }
 
+/**
+ * Get LogEntries
+ * @param {*} parent 
+ * @param {*} args 
+ * @param {{ prisma: Prisma }} context 
+ * @returns 
+ */
+async function logEntries(parent, args, context) {
+  return context.prisma.exercisesOnWorkouts.findUnique({ where: { id: parent.id } }).logEntries()
+}
+
 
 module.exports = {
   workout,
   exercise,
   setTargets,
+  logEntries,
 }
