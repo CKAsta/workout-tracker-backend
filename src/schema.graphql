@@ -20,6 +20,7 @@ type Mutation {
   addExercisesOnWorkouts(exerciseId: ID!, workoutId: ID!): ExercisesOnWorkouts
   updateExercisesOnWorkouts(id: ID!, exerciseId: ID!, workoutId: ID!): ExercisesOnWorkouts
   deleteExercisesOnWorkouts(id: ID!): ExercisesOnWorkouts
+  deleteExerciseByWorkoutId(workoutId: ID!): ExercisesOnWorkouts
 
   addSetTarget(exercisesOnWorkoutsId: ID!, setNumber: Int!, reps: Int!, weight: Int!): SetTarget
   updateSetTarget(id: ID!, exercisesOnWorkoutsId: ID!, setNumber: Int!, reps: Int!, weight: Int!): SetTarget
@@ -29,10 +30,12 @@ type Mutation {
   addLog(workoutId: ID!): Log!
   updateLog(id: ID!, workoutId: ID!): Log
   deleteLog(id: ID!): Log
+  deleteLogByWorkoutId(workoutId: ID!): Log
 
   addLogEntry(logId: ID!, exercisesOnWorkoutsId: ID!, setNumber: Int!, reps: Int!, weight: Int!): LogEntry
   updateLogEntry(id: ID!, logId: ID!, exercisesOnWorkoutsId: ID!, setNumber: Int!, reps: Int!, weight: Int!): LogEntry
   deleteLogEntry(id: ID!): LogEntry
+  deleteLogEntryByExercise(exercisesOnWorkoutsId: ID!): LogEntry
 
   signup(email: String!, password: String!, name: String!): AuthPayload
   login(email: String!, password: String!): AuthPayload

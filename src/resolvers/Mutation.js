@@ -165,6 +165,21 @@ async function updateExercisesOnWorkouts(parent, args, context, info) {
 }
 
 /**
+ * Delete all exercises associated with WorkoutID
+ * @param {any} parent 
+ * @param { id: Int } args 
+ * @param {{ prisma: Prisma }} context 
+ * @param {any} info 
+ */
+async function deleteExerciseByWorkoutId(parent, args, context, info) {
+  return await context.prisma.exercisesOnWorkouts.deleteMany({
+    where: {
+      workoutId: parseInt(args.workoutId)
+    }
+  })
+}
+
+/**
  * Add a new SetTarget
  * @param {any} parent 
  * @param { exerciseId: Int, workoutId: Int, sets: Int, repetitions: Int} args 
@@ -279,8 +294,23 @@ async function updateLog(parent, args, context, info) {
 async function deleteLog(parent, args, context, info) {
   return await context.prisma.log.delete({
     where: {
-      id: parseInt(id),
+      id: parseInt(args.id),
     },
+  })
+}
+
+/**
+ * Delete all exercises associated with WorkoutID
+ * @param {any} parent 
+ * @param { id: Int } args 
+ * @param {{ prisma: Prisma }} context 
+ * @param {any} info 
+ */
+ async function deleteLogByWorkoutId(parent, args, context, info) {
+  return await context.prisma.log.deleteMany({
+    where: {
+      workoutId: parseInt(args.workoutId)
+    }
   })
 }
 
@@ -338,6 +368,21 @@ async function deleteLogEntry(parent, args, context, info) {
     where: {
       id: parseInt(id),
     },
+  })
+}
+
+/**
+ * Delete a existing LogEntry by ID
+ * @param {any} parent 
+ * @param { id: Int } args 
+ * @param {{ prisma: Prisma }} context 
+ * @param {any} info 
+ */
+async function deleteLogEntryByExercise(parent, args, context, info) {
+  return await context.prisma.logEntry.deleteMany({
+    where: {
+      exercisesOnWorkoutsId: parseInt(args.exercisesOnWorkoutsId)
+    }
   })
 }
 
@@ -403,6 +448,7 @@ module.exports = {
   addExercisesOnWorkouts,
   updateExercisesOnWorkouts,
   deleteExercisesOnWorkouts,
+  deleteExerciseByWorkoutId,
   addSetTarget,
   updateSetTarget,
   deleteSetTarget,
@@ -410,9 +456,11 @@ module.exports = {
   addLog,
   updateLog,
   deleteLog,
+  deleteLogByWorkoutId,
   addLogEntry,
   updateLogEntry,
   deleteLogEntry,
+  deleteLogEntryByExercise,
   signup,
   login,
 }
